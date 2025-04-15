@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class Main {
 
     private UserManager userManager = new UserManager();
-
+    private String passageFileName = new String();
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Main().createAndShowGUI();
@@ -116,6 +116,7 @@ public class Main {
         difficultyComboBox.addActionListener(e -> {
             String selectedDifficulty = (String) difficultyComboBox.getSelectedItem();
             messageLabel.setText("Selected difficulty: " + selectedDifficulty);
+            passageFileName = PassageRetriever.getPassage_filename(selectedDifficulty);
         });
 
         // Add components to the login panel
