@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class PassageRetriever {
+public class TextLibrary {
 
     public static String getPassage_filename(String difficulty) {
         difficulty = difficulty.toLowerCase();

@@ -116,7 +116,7 @@ public class Main {
         difficultyComboBox.addActionListener(e -> {
             String selectedDifficulty = (String) difficultyComboBox.getSelectedItem();
             messageLabel.setText("Selected difficulty: " + selectedDifficulty);
-            passageFileName = PassageRetriever.getPassage_filename(selectedDifficulty);
+            passageFileName = TextLibrary.getPassage_filename(selectedDifficulty);
         });
 
         // Add components to the login panel
