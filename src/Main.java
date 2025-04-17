@@ -18,7 +18,7 @@ public class Main {
         // Create the main frame
         JFrame frame = new JFrame("Git Good - WPM Tester");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 350);
+        frame.setSize(400, 400);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
 
 
@@ -69,7 +69,7 @@ public class Main {
         difficultyComboBox.setVisible(false);
 
         // timing method combo box
-        JComboBox<String> timingComboBox = new JComboBox<>(new String[] {"First keystroke", "When window appears"});
+        JComboBox<String> timingComboBox = new JComboBox<>(new String[] {"Start timer on first keystroke", "Start time when window appears"});
         timingComboBox.setVisible(false);
 
         // option to penalize WPM for incorrectly typed words
@@ -176,6 +176,5 @@ public class Main {
 
         // Display the frame
         frame.setVisible(true);
-
     }
 }
