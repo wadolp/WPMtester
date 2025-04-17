@@ -1,2 +1,2 @@
 # WPMtester
-Java Project for Austin Sherwood, Brandy Minister, Nicola Hawthorne, and William Adolph
+Java Project for Austin Sherwood, Brady Minister, Nicola Hawthorne, and William Adolph
