@@ -7,6 +7,7 @@ public class Main {
 
     private UserManager userManager = new UserManager();
     private String passageFileName = new String();
+    private String TimerOption = new String();
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Main().createAndShowGUI();
@@ -17,7 +18,7 @@ public class Main {
         // Create the main frame
         JFrame frame = new JFrame("Git Good - WPM Tester");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 350);
+        frame.setSize(400, 400);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
 
 
@@ -53,16 +54,27 @@ public class Main {
         // Buttons for Register and Login
         JButton registerButton = new JButton("Register");
         JButton loginButton = new JButton("Login");
-
+        JButton startButton = new JButton("Start");
 
         registerButton.setBackground(buttonColor);
         loginButton.setBackground(buttonColor);
+        startButton.setBackground(buttonColor);
         registerButton.setForeground(Color.WHITE);
         loginButton.setForeground(Color.WHITE);
+        startButton.setForeground(Color.WHITE);
+
 
         // difficulty combo box
         JComboBox<String> difficultyComboBox = new JComboBox<>(new String[] {"Easy", "Medium", "Hard"});
         difficultyComboBox.setVisible(false);
+
+        // timing method combo box
+        JComboBox<String> timingComboBox = new JComboBox<>(new String[] {"Start timer on first keystroke", "Start time when window appears"});
+        timingComboBox.setVisible(false);
+
+        // option to penalize WPM for incorrectly typed words
+        JComboBox<String> penalizeComboBox = new JComboBox<>(new String[] {"don't penalize for misspelled words", "penalize for misspelled words"});
+        penalizeComboBox.setVisible(false);
 
         // Registration
         registerButton.addActionListener(new ActionListener() {
@@ -104,8 +116,10 @@ public class Main {
                 }
 
                 if (userManager.login(username, password)) {
-                    messageLabel.setText("Login successful! Choose difficulty.");
+                    messageLabel.setText("Login successful! Choose difficulty, timer, and penalize options");
                     difficultyComboBox.setVisible(true);
+                    timingComboBox.setVisible(true);
+                    penalizeComboBox.setVisible(true);
                 } else {
                     messageLabel.setText("Invalid login. Try again.");
                 }
@@ -117,6 +131,25 @@ public class Main {
             String selectedDifficulty = (String) difficultyComboBox.getSelectedItem();
             messageLabel.setText("Selected difficulty: " + selectedDifficulty);
             passageFileName = TextLibrary.getPassage_filename(selectedDifficulty);
+        });
+
+        // Select whether user wants the timer to start on first keystroke or when window appears
+        timingComboBox.addActionListener(e -> {
+            String selectedTiming = (String) timingComboBox.getSelectedItem();
+            messageLabel.setText("Selected timing: " + selectedTiming);
+            TimerOption = selectedTiming;
+        });
+
+        // Select whether user wants to penalize for misspelled words or not
+        penalizeComboBox.addActionListener(e -> {
+            String selectedPenalize = (String) penalizeComboBox.getSelectedItem();
+            messageLabel.setText("Selected penalize: " + selectedPenalize);
+        });
+
+        // button to start typing test
+        startButton.addActionListener(e -> {
+            TypingTest test = new TypingTest(usernameField.getText(), passageFileName, TimerOption);
+            test.startTest();
         });
 
         // Add components to the login panel
@@ -133,6 +166,9 @@ public class Main {
         loginPanel.add(messageLabel);
         loginPanel.add(Box.createVerticalStrut(10));
         loginPanel.add(difficultyComboBox);
+        loginPanel.add(timingComboBox);
+        loginPanel.add(penalizeComboBox);
+        loginPanel.add(startButton);
 
         // add components to frame
         frame.add(welcomeLabel, BorderLayout.NORTH);

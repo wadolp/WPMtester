@@ -2,6 +2,7 @@ import java.util.Random;
 
 public class TextLibrary {
 
+
     public static String getPassage_filename(String difficulty) {
         difficulty = difficulty.toLowerCase();
         Random rand = new Random();
@@ -22,7 +23,8 @@ public class TextLibrary {
                 throw new IllegalArgumentException("Invalid difficulty: " + difficulty); //prevents dummy value initializing prefix
         }
         //returns filename of a random passage depending on difficulty selected
-        return prefix + fileNumber + getFileLabel(fileNumber) + "_" + difficulty + ".txt";
+        return //"src/resources/" +
+                prefix + fileNumber + getFileLabel(fileNumber) + "_" + difficulty + ".txt";
     }
 
     private static String getFileLabel(int number) {
