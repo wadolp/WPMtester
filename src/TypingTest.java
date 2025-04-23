@@ -157,6 +157,7 @@ public class TypingTest extends JFrame {
             public void changedUpdate(DocumentEvent e) {
                 // Plain text components don't fire these events
             }
+          main
         });
 
         // Add button listeners
