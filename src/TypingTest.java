@@ -253,9 +253,11 @@ public class TypingTest extends JFrame {
             wpm = applyPenalty(wpm, accuracy);
         }
 
+
         wpmLabel.setText("WPM: " + wpm);
         accuracyLabel.setText("Accuracy: " + accuracy + "%");
     }
+
 
     private int applyPenalty(int wpm, int accuracy) {
         return 0;
