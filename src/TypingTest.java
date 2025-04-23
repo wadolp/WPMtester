@@ -71,6 +71,7 @@ public class TypingTest {
 
         SwingUtilities.invokeLater(() -> {
                     scrollPane.getVerticalScrollBar().setValue(0);
+                    typingArea.requestFocusInWindow();
         });
 
         TypingFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
