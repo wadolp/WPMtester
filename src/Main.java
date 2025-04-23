@@ -7,7 +7,9 @@ public class Main {
 
     private UserManager userManager = new UserManager();
     private String passageFileName = new String();
-    private String TimerOption = new String();
+    private boolean timerEnabled = false;
+    private boolean penaltyEnabled = false;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Main().createAndShowGUI();
@@ -18,9 +20,8 @@ public class Main {
         // Create the main frame
         JFrame frame = new JFrame("Git Good - WPM Tester");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(400, 400); // Increased height to accommodate new options
         frame.setLocationRelativeTo(null); // Center the frame on the screen
-
 
         Color welcomeColor = new Color(0, 153, 255); // Blue color
         Color buttonColor = new Color(34, 139, 34); // Green color
@@ -47,34 +48,61 @@ public class Main {
         JTextField usernameField = new JTextField(20);
         JPasswordField passwordField = new JPasswordField(20);
 
-
         JLabel messageLabel = new JLabel();
         messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Buttons for Register and Login
         JButton registerButton = new JButton("Register");
         JButton loginButton = new JButton("Login");
-        JButton startButton = new JButton("Start");
 
         registerButton.setBackground(buttonColor);
         loginButton.setBackground(buttonColor);
-        startButton.setBackground(buttonColor);
         registerButton.setForeground(Color.WHITE);
         loginButton.setForeground(Color.WHITE);
-        startButton.setForeground(Color.WHITE);
 
+        // Game options panel (initially hidden)
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+        optionsPanel.setBackground(boxColor);
+        optionsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        optionsPanel.setBorder(BorderFactory.createTitledBorder("Game Options"));
+        optionsPanel.setVisible(false);
 
-        // difficulty combo box
+        // Add difficulty selection
+        JLabel difficultyLabel = new JLabel("Select Difficulty:");
+        difficultyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         JComboBox<String> difficultyComboBox = new JComboBox<>(new String[] {"Easy", "Medium", "Hard"});
-        difficultyComboBox.setVisible(false);
+        difficultyComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+        difficultyComboBox.setMaximumSize(new Dimension(150, 25));
 
-        // timing method combo box
-        JComboBox<String> timingComboBox = new JComboBox<>(new String[] {"Start timer on first keystroke", "Start time when window appears"});
-        timingComboBox.setVisible(false);
+        // Add timer and penalty checkboxes
+        JCheckBox timerCheckbox = new JCheckBox("Enable Timer (60 seconds)");
+        timerCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
+        timerCheckbox.setBackground(boxColor);
 
-        // option to penalize WPM for incorrectly typed words
-        JComboBox<String> penalizeComboBox = new JComboBox<>(new String[] {"don't penalize for misspelled words", "penalize for misspelled words"});
-        penalizeComboBox.setVisible(false);
+        JCheckBox penaltyCheckbox = new JCheckBox("Penalize Mistakes");
+        penaltyCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
+        penaltyCheckbox.setBackground(boxColor);
+
+        // Start button
+        JButton startButton = new JButton("Start Typing Test");
+        startButton.setBackground(buttonColor);
+        startButton.setForeground(Color.WHITE);
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startButton.setMaximumSize(new Dimension(200, 30));
+
+        // Add components to options panel
+        optionsPanel.add(Box.createVerticalStrut(10));
+        optionsPanel.add(difficultyLabel);
+        optionsPanel.add(Box.createVerticalStrut(5));
+        optionsPanel.add(difficultyComboBox);
+        optionsPanel.add(Box.createVerticalStrut(15));
+        optionsPanel.add(timerCheckbox);
+        optionsPanel.add(Box.createVerticalStrut(5));
+        optionsPanel.add(penaltyCheckbox);
+        optionsPanel.add(Box.createVerticalStrut(15));
+        optionsPanel.add(startButton);
+        optionsPanel.add(Box.createVerticalStrut(10));
 
         // Registration
         registerButton.addActionListener(new ActionListener() {
@@ -116,40 +144,44 @@ public class Main {
                 }
 
                 if (userManager.login(username, password)) {
-                    messageLabel.setText("Login successful! Choose difficulty, timer, and penalize options");
-                    difficultyComboBox.setVisible(true);
-                    timingComboBox.setVisible(true);
-                    penalizeComboBox.setVisible(true);
+                    // Hide login components and show options
+                    usernameField.setVisible(false);
+                    passwordField.setVisible(false);
+                    registerButton.setVisible(false);
+                    loginButton.setVisible(false);
+                    messageLabel.setText("Login successful! Choose your options.");
+
+                    // Show options panel
+                    optionsPanel.setVisible(true);
                 } else {
                     messageLabel.setText("Invalid login. Try again.");
                 }
             }
         });
 
-        // Select how difficult the game should be
+        // Select difficulty
         difficultyComboBox.addActionListener(e -> {
             String selectedDifficulty = (String) difficultyComboBox.getSelectedItem();
-            messageLabel.setText("Selected difficulty: " + selectedDifficulty);
             passageFileName = TextLibrary.getPassage_filename(selectedDifficulty);
         });
 
-        // Select whether user wants the timer to start on first keystroke or when window appears
-        timingComboBox.addActionListener(e -> {
-            String selectedTiming = (String) timingComboBox.getSelectedItem();
-            messageLabel.setText("Selected timing: " + selectedTiming);
-            TimerOption = selectedTiming;
+        // Set timer option
+        timerCheckbox.addActionListener(e -> {
+            timerEnabled = timerCheckbox.isSelected();
         });
 
-        // Select whether user wants to penalize for misspelled words or not
-        penalizeComboBox.addActionListener(e -> {
-            String selectedPenalize = (String) penalizeComboBox.getSelectedItem();
-            messageLabel.setText("Selected penalize: " + selectedPenalize);
+        // Set penalty option
+        penaltyCheckbox.addActionListener(e -> {
+            penaltyEnabled = penaltyCheckbox.isSelected();
         });
 
-        // button to start typing test
+        // Start button action
         startButton.addActionListener(e -> {
-            TypingTest test = new TypingTest(usernameField.getText(), passageFileName, TimerOption);
-            test.startTest();
+            frame.dispose(); // Close the login window
+            // Create typing test with selected options
+            TypingTest test = new TypingTest(passageFileName);
+            //test.setPenaltyEnabled(penaltyEnabled);
+            //test.setTimerEnabled(timerEnabled);
         });
 
         // Add components to the login panel
@@ -164,15 +196,11 @@ public class Main {
         loginPanel.add(Box.createVerticalStrut(10));
         loginPanel.add(loginButton);
         loginPanel.add(messageLabel);
-        loginPanel.add(Box.createVerticalStrut(10));
-        loginPanel.add(difficultyComboBox);
-        loginPanel.add(timingComboBox);
-        loginPanel.add(penalizeComboBox);
-        loginPanel.add(startButton);
 
         // add components to frame
         frame.add(welcomeLabel, BorderLayout.NORTH);
         frame.add(loginPanel, BorderLayout.CENTER);
+        frame.add(optionsPanel, BorderLayout.SOUTH);
 
         // Display the frame
         frame.setVisible(true);
