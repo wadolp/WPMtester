@@ -202,6 +202,22 @@ public class Main {
         frame.add(loginPanel, BorderLayout.CENTER);
         frame.add(optionsPanel, BorderLayout.SOUTH);
 
+
+        // Auto-login if remembered
+        String rememberedUser = userManager.loadLastUser();
+
+        if (rememberedUser != null) {
+            messageLabel.setText("Welcome back, " + rememberedUser + "! Auto-login successful.");
+            usernameField.setVisible(false);
+            passwordField.setVisible(false);
+            registerButton.setVisible(false);
+            loginButton.setVisible(false);
+            optionsPanel.setVisible(true);
+        }
+
+
+
+
         // Display the frame
         frame.setVisible(true);
     }
