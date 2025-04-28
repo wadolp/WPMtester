@@ -95,6 +95,15 @@ public class TypingTest extends JFrame {
         inputTextArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         inputTextArea.setLineWrap(true);
         inputTextArea.setWrapStyleWord(true);
+
+        //prevent copy and pasting in TextArea
+        inputTextArea.setTransferHandler(null);
+        InputMap inputMap = inputTextArea.getInputMap();
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK), "none");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.META_DOWN_MASK), "none");
+        inputTextArea.setComponentPopupMenu(null);
+
+
         JScrollPane inputScrollPane = new JScrollPane(inputTextArea);
         inputScrollPane.setBorder(BorderFactory.createTitledBorder("Type here:"));
 
@@ -264,7 +273,9 @@ public class TypingTest extends JFrame {
 
 
     private int applyPenalty(int wpm, int accuracy) {
-        return 0;
+        int penalty = (100 - accuracy) / 2;
+        int penalizedWPM = wpm - penalty;
+        return Math.max(penalizedWPM, 0); // WPM can't go below 0
     }
 
     // Setter methods for options

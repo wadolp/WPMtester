@@ -180,7 +180,7 @@ public class Main {
             frame.dispose(); // Close the login window
             // Create typing test with selected options
             TypingTest test = new TypingTest(passageFileName);
-            //test.setPenaltyEnabled(penaltyEnabled);
+            test.setPenaltyEnabled(penaltyEnabled);
             test.setTimerEnabled(timerEnabled);
         });
 
