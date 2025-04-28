@@ -30,6 +30,8 @@ public class TypingTest extends JFrame {
     private boolean timerEnabled = false;
     private int timerDuration = 60; // Default 60 seconds
     private Timer countdownTimer;
+    private int timeLeft;
+
 
     // Text styles
     private Style defaultStyle;
@@ -190,6 +192,8 @@ public class TypingTest extends JFrame {
 
         if (startTime == null) {
             startTime = Instant.now();
+            timeLeft = timerDuration;
+            countdownTimer.start();
         }
 
         String inputText = inputTextArea.getText();
@@ -315,5 +319,27 @@ public class TypingTest extends JFrame {
     private void updateTimer() {
         // This method will be implemented to update the timer display
         // and handle time-up events
+        if (timeLeft > 0) {
+            timeLeft--;
+            int minutes = timeLeft / 60;
+            int seconds = timeLeft % 60;
+
+            SwingUtilities.invokeLater(() -> {
+                timerLabel.setText(String.format("Time: %d:%02d", minutes, seconds));
+                timerLabel.revalidate();
+                timerLabel.repaint();
+            });
+        } else {
+            countdownTimer.stop();
+            testCompleted = true;
+
+
+            SwingUtilities.invokeLater(() -> {
+                statusLabel.setText("Time's up!");
+                statusLabel.revalidate();
+                statusLabel.repaint();
+                inputTextArea.setEditable(false);
+            });
+        }
     }
 }

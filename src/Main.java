@@ -181,7 +181,7 @@ public class Main {
             // Create typing test with selected options
             TypingTest test = new TypingTest(passageFileName);
             //test.setPenaltyEnabled(penaltyEnabled);
-            //test.setTimerEnabled(timerEnabled);
+            test.setTimerEnabled(timerEnabled);
         });
 
         // Add components to the login panel
