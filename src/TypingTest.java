@@ -261,7 +261,7 @@ public class TypingTest extends JFrame {
         // Calculate accuracy
         int accuracy = totalChars > 0 ? (correctChars * 100) / totalChars : 0;
 
-        // Apply penalty if enabled (placeholder for future implementation)
+        // Apply penalty if enabled
         if (penaltyEnabled) {
             wpm = applyPenalty(wpm, accuracy);
         }
@@ -326,15 +326,13 @@ public class TypingTest extends JFrame {
         inputTextArea.requestFocus();
     }
 
-    // Timer-related methods (to be implemented)
+    // Timer-related method to update display
     private void updateTimer() {
-        // This method will be implemented to update the timer display
-        // and handle time-up events
         if (timeLeft > 0) {
             timeLeft--;
             int minutes = timeLeft / 60;
             int seconds = timeLeft % 60;
-
+            //update timer
             SwingUtilities.invokeLater(() -> {
                 timerLabel.setText(String.format("Time: %d:%02d", minutes, seconds));
                 timerLabel.revalidate();
@@ -344,7 +342,7 @@ public class TypingTest extends JFrame {
             countdownTimer.stop();
             testCompleted = true;
 
-
+            // Update UI to show that time has expired and prevent further typing
             SwingUtilities.invokeLater(() -> {
                 statusLabel.setText("Time's up!");
                 statusLabel.revalidate();
