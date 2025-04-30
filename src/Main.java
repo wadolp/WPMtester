@@ -71,7 +71,7 @@ public class Main {
         // Add difficulty selection
         JLabel difficultyLabel = new JLabel("Select Difficulty:");
         difficultyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JComboBox<String> difficultyComboBox = new JComboBox<>(new String[] {"Easy", "Medium", "Hard"});
+        JComboBox<String> difficultyComboBox = new JComboBox<>(new String[] {"","Easy", "Medium", "Hard"});
         difficultyComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         difficultyComboBox.setMaximumSize(new Dimension(150, 25));
 
